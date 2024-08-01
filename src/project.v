@@ -44,7 +44,7 @@ module tt_um_stochastic_test_CL123abc(
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
         lfsr_1[30:1] <=lfsr_1[29:0] ;
 
-	    lfsr_2[0] <= lfsr_2[12] ^ lfsr_2[16] ;
+	    lfsr_2[0] <= lfsr_2[12] ^ lfsr_2[16] ; //using different gates to get different pattern
         lfsr_2[30:1] <=lfsr_2[29:0] ;
 
 	    // Comparator used to generate Bipolar Stochastic Number from 4-bit probability.
