@@ -52,7 +52,7 @@ ovr_flg=0
 # Run though the simulation to create the idealized LFSR values.
 for i in range(n_clock):
 	#every 8 bits output and reset counters
-	if(n_clock%8 == 0)
+	if(n_clock%8 == 0):
 		out_prob = up_counter_val
 		up_counter_val = 0
     ovr_flg = 0
@@ -74,19 +74,19 @@ for i in range(n_clock):
   LFSR2[i]=PRBSN2[prbs_size-1]
 
 #Comparator to generate bipolar SN 
-  if(in_prob1 > int(LFSR1[0:3],2))
+  if(in_prob1 > int(LFSR1[0:3],2)):
 	  SN1 = 1
   else
 	  SN1 = 0
-  if(in_prob2 > int(LFSR2[0:3],2))
+  if(in_prob2 > int(LFSR2[0:3],2)):
 	  SN2 = 1
   else
 	  SN2 = 0
 #XNOR gate for multiplication of bipolar SN
   SN3 = !(SN1 ^ SN2)
 #Convert back to binary prob with an upcounter that outputs every 8 SN bits
-	if(SN3 == 1)
-		if (up_counter_val == 7)
+	if(SN3 == 1):
+		if (up_counter_val == 7):
 			up_counter_val = 0
 			ovr_flg = 1
 		up_counter_val += 1
