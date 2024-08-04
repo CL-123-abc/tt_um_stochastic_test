@@ -33,11 +33,11 @@ LFSR1=[1]*(n_clock) #LFSR1
 LFSR2=[1]*(n_clock) #LFSR2
 out = [1]*(n_clock)
 
-#SN1
+#SN1 Input 1
 SN1=[1]*(n_clock)
-#SN2
+#SN2 Input 2
 SN2=[1]*(n_clock)
-#SN3
+#SN3 Output
 SN3=[1]*(n_clock)
 
 #Input Probabilities
@@ -47,10 +47,15 @@ in_prob2=8 #[1000]
 up_counter_val = 0
 out_prob = 0
 #Overflow Flag 
-ovr_flg=[1]*(n_clock)
+ovr_flg=0
 
 # Run though the simulation to create the idealized LFSR values.
 for i in range(n_clock):
+	#every 8 bits output and reset counters
+	if(n_clock%8 == 0)
+		out_prob = up_counter_val
+		up_counter_val = 0
+    ovr_flg = 0
   #input the feedback
   PRBSN1[0]=PRBSO1[27]^PRBSO1[30]
   PRBSN2[0]=PRBSO2[12]^PRBSO2[16]
@@ -79,9 +84,13 @@ for i in range(n_clock):
 	  SN2 = 0
 #XNOR gate for multiplication of bipolar SN
   SN3 = !(SN1 ^ SN2)
-###Convert back to binary prob with an upcounter that outputs every 8 SN bits
-  
-
+#Convert back to binary prob with an upcounter that outputs every 8 SN bits
+	if(SN3 == 1)
+		if (up_counter_val == 7)
+			up_counter_val = 0
+			ovr_flg = 1
+		up_counter_val += 1
+	
 #Start the test  
 @cocotb.test() 
 async def test_project(dut):
@@ -138,8 +147,6 @@ async def test_project(dut):
     # The following assertion is just an example of how to check the output values.
 
     # Test (assert) that we are getting the expected output. 
-    	assert dut.uo_out[0].value == out[i]
-      assert dut.uo_out[1].value == out[i]
-      assert dut.uo_out[2].value == out[i]
-      assert dut.uo_out[4].value == out[i]
+    	assert int(dut.uo_out[2:0].value,2) == out_prob
+      assert dut.uo_out[4].value == ovr_flg
       
