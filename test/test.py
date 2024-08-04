@@ -55,7 +55,7 @@ for i in range(n_clock):
 	if(n_clock%8 == 0):
 		out_prob = up_counter_val
 		up_counter_val = 0
-    ovr_flg = 0
+    		ovr_flg = 0
   #input the feedback
   PRBSN1[0]=PRBSO1[27]^PRBSO1[30]
   PRBSN2[0]=PRBSO2[12]^PRBSO2[16]
