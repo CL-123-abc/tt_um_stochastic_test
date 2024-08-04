@@ -55,35 +55,35 @@ for i in range(n_clock):
 	if(n_clock%8 == 0):
 		out_prob = up_counter_val
 		up_counter_val = 0
-    		ovr_flg = 0
+    	ovr_flg = 0
   #input the feedback
-  PRBSN1[0]=PRBSO1[27]^PRBSO1[30]
-  PRBSN2[0]=PRBSO2[12]^PRBSO2[16]
+  	PRBSN1[0]=PRBSO1[27]^PRBSO1[30]
+  	PRBSN2[0]=PRBSO2[12]^PRBSO2[16]
   #shift the values
-  for j in range(prbs_size-1):
-    count=prbs_size-j-1
-    PRBSN1[count]=PRBSO1[count-1]
-    PRBSN2[count]=PRBSO2[count-1]
+  	for j in range(prbs_size-1):
+    	count=prbs_size-j-1
+    	PRBSN1[count]=PRBSO1[count-1]
+    	PRBSN2[count]=PRBSO2[count-1]
   #update the array
-  for j in range(len(PRBSN1)):
-    PRBSO1[j]=PRBSN1[j]    
-  for j in range(len(PRBSN2)):
-    PRBSO2[j]=PRBSN2[j]
+  	for j in range(len(PRBSN1)):
+    	PRBSO1[j]=PRBSN1[j]    
+  	for j in range(len(PRBSN2)):
+    	PRBSO2[j]=PRBSN2[j]
   #take the output from the rightmost FF.
-  LFSR1[i]=PRBSN1[prbs_size-1]
-  LFSR2[i]=PRBSN2[prbs_size-1]
+  	LFSR1[i]=PRBSN1[prbs_size-1]
+  	LFSR2[i]=PRBSN2[prbs_size-1]
 
 #Comparator to generate bipolar SN 
-  if(in_prob1 > int(LFSR1[0:3],2)):
-	  SN1 = 1
-  else
-	  SN1 = 0
-  if(in_prob2 > int(LFSR2[0:3],2)):
-	  SN2 = 1
-  else
-	  SN2 = 0
+  	if(in_prob1 > int(LFSR1[0:3],2)):
+	  	SN1 = 1
+  	else
+	  	SN1 = 0
+  	if(in_prob2 > int(LFSR2[0:3],2)):
+	  	SN2 = 1
+  	else
+		  SN2 = 0
 #XNOR gate for multiplication of bipolar SN
-  SN3 = !(SN1 ^ SN2)
+  	SN3 = !(SN1 ^ SN2)
 #Convert back to binary prob with an upcounter that outputs every 8 SN bits
 	if(SN3 == 1):
 		if (up_counter_val == 7):
@@ -142,11 +142,11 @@ async def test_project(dut):
     ##for i in range(0,n_clock):
 
     # Wait for one clock cycle to see the output values
-    	await ClockCycles(dut.clk, 1)
+	await ClockCycles(dut.clk, 1)
 
     # The following assertion is just an example of how to check the output values.
 
     # Test (assert) that we are getting the expected output. 
-    	assert int(dut.uo_out[2:0].value,2) == out_prob
-      assert dut.uo_out[4].value == ovr_flg
+	assert int(dut.uo_out[2:0].value,2) == out_prob
+	assert dut.uo_out[4].value == ovr_flg
       
