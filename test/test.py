@@ -31,7 +31,7 @@ n_clock=10000
 #set output lists to 1
 LFSR1=[1]*(n_clock) #LFSR1
 LFSR2=[1]*(n_clock) #LFSR2
-out = [1]*(n_clock)
+out=[1]*(n_clock)
 
 #SN1 Input 1
 SN1=[1]*(n_clock)
@@ -45,7 +45,7 @@ in_prob1=8 #[1000]
 in_prob2=8 #[1000]
 #Output Probability
 up_counter_val = 0
-out_prob = 0
+out_prob=0
 #Overflow Flag 
 ovr_flg=0
 
@@ -55,7 +55,7 @@ for i in range(n_clock):
 	if(n_clock%8 == 0):
 		out_prob = up_counter_val
 		up_counter_val = 0
-    	ovr_flg = 0
+		ovr_flg = 0
   #input the feedback
   	PRBSN1[0]=PRBSO1[27]^PRBSO1[30]
   	PRBSN2[0]=PRBSO2[12]^PRBSO2[16]
@@ -81,7 +81,7 @@ for i in range(n_clock):
   	if(in_prob2 > int(LFSR2[0:3],2)):
 	  	SN2 = 1
   	else
-		  SN2 = 0
+		SN2 = 0
 #XNOR gate for multiplication of bipolar SN
   	SN3 = !(SN1 ^ SN2)
 #Convert back to binary prob with an upcounter that outputs every 8 SN bits
