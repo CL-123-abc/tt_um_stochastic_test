@@ -76,11 +76,11 @@ for i in range(n_clock):
 #Comparator to generate bipolar SN 
   	if(in_prob1 > int(LFSR1[0:3],2)):
 	  	SN1 = 1
-  	else
+	else:
 	  	SN1 = 0
   	if(in_prob2 > int(LFSR2[0:3],2)):
 	  	SN2 = 1
-  	else
+	else:
 		SN2 = 0
 #XNOR gate for multiplication of bipolar SN
   	SN3 = !(SN1 ^ SN2)
@@ -142,11 +142,11 @@ async def test_project(dut):
     ##for i in range(0,n_clock):
 
     # Wait for one clock cycle to see the output values
-	await ClockCycles(dut.clk, 1)
+    await ClockCycles(dut.clk, 1)
 
     # The following assertion is just an example of how to check the output values.
 
     # Test (assert) that we are getting the expected output. 
-	assert int(dut.uo_out[2:0].value,2) == out_prob
-	assert dut.uo_out[4].value == ovr_flg
+    assert int(dut.uo_out[2:0].value,2) == out_prob
+    assert dut.uo_out[4].value == ovr_flg
       
