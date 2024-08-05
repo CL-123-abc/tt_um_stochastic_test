@@ -17,12 +17,11 @@ PRBSN2=[0]*prbs_size
 PRBSO2=[0]*prbs_size
 
 #LFSR will not work if all FFs are set to 0
-
 #Set highest register to 1 for LFSR1
 PRBSO1[prbs_size-1]=1
-
 #Set highest register to 1 for LFSR2
 PRBSO2[prbs_size-2]=1
+
 #Set number of clock cycles to test
 n_clock = 10000
 
@@ -38,11 +37,11 @@ SN2=[0]*(n_clock) #Input2
 SN3=[0]*(n_clock) #Output
 
 #Input Probabilities
-in_prob1=8 #[1000]
-in_prob2=8 #[1000]
+in_prob1=8 #[1100]
+in_prob2=8 #[1100]
 #Output Probability Values
 up_counter_val=0
-out_prob=[0]*(n_clock)
+out_prob=0
 ovr_flg=[0]*(n_clock) #Overflow flag
 
 #Run through the simulation to create 
@@ -51,7 +50,7 @@ ovr_flg=[0]*(n_clock) #Overflow flag
 for i in range(n_clock):
     #Every 8 SN output bits, output and reset
     if((i%8) == 0):
-        out_prob[i]=up_counter_val
+        out_prob=up_counter_val
         up_counter_val = 0
     
     ###LFSR CODE###
