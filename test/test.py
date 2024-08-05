@@ -53,7 +53,7 @@ ovr_flg=[0]*(n_clock) #Overflow flag
 for i in range(n_clock):
     #Every 8 SN output bits, output and reset
     if(n_clock%8 == 0):
-        out_prob[i]=up_counter_val[i]
+        out_prob[i]=up_counter_val
         up_counter_val = 0
         
     ###LFSR CODE###
