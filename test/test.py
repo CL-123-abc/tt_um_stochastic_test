@@ -163,5 +163,5 @@ async def test_project(dut):
             if(dut.uo_out[i] == 1):
                 test_out_prob = test_out_prob + pow(2,i)
         
-        assert test_out_prob == out_prob
-        assert dut.uo_out[4].value == ovr_flg
+        assert test_out_prob == out_prob[i]
+        assert dut.uo_out[4].value == ovr_flg[i]
