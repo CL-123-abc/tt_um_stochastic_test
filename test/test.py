@@ -41,7 +41,7 @@ in_prob1=8 #[1100]
 in_prob2=8 #[1100]
 #Output Probability Values
 up_counter_val=0
-out_prob=0
+out_prob=[0]*(n_clock)
 ovr_flg=[0]*(n_clock) #Overflow flag
 
 #Run through the simulation to create 
@@ -50,7 +50,7 @@ ovr_flg=[0]*(n_clock) #Overflow flag
 for i in range(n_clock):
     #Every 8 SN output bits, output and reset
     if((i%8) == 0):
-        out_prob=up_counter_val
+        out_prob[i]=up_counter_val
         up_counter_val = 0
     
     ###LFSR CODE###
