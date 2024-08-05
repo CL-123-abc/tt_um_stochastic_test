@@ -155,17 +155,17 @@ async def test_project(dut):
     dut.ui_in[7].value = 1
     
     #Compare output to theory for each clock cycle
-    #for i in range(0,n_clock):
+    for i in range(0,n_clock):
         
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk,1)
+        # Wait for one clock cycle to see the output values
+        await ClockCycles(dut.clk,1)
     
-    #The following assertion is just an example of how to check the output values.
+        #The following assertion is just an example of how to check the output values.
     
-    # Test (assert) that we are getting the expected output.
-    for i in range(3):
-        if(dut.uo_out[i] == 1):
-            test_out_prob = test_out_prob + pow(2,i)
+        # Test (assert) that we are getting the expected output.
+        for i in range(3):
+            if(dut.uo_out[i] == 1):
+                test_out_prob = test_out_prob + pow(2,i)
         
-    assert test_out_prob == out_prob
-    assert dut.uo_out[4].value == over_flg
+        assert test_out_prob == out_prob
+        assert dut.uo_out[4].value == over_flg
