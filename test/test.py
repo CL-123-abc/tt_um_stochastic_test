@@ -46,7 +46,6 @@ for i in range(n_clock):
     #Every 8 SN output bits, output and reset
     if((i%8) == 0):
         out_prob=up_counter_val
-        avg += out_prob
         up_counter_val = 0
     
     ###LFSR CODE###
