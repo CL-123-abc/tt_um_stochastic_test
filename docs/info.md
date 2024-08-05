@@ -11,7 +11,7 @@ You can also include images in this folder and reference them in the markdown. E
 Stochastic Multiplier. 
 
 ## How to test
-Input and output.
+Input of 2 4-bit Binary Probabilities and output of 1 3-bit probability and overflow.
 
 ## External hardware
 ADALM2000
