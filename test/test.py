@@ -31,6 +31,8 @@ n_clock = 10000
 #Set output lists
 LFSR1=[1]*(n_clock)
 LFSR2=[1]*(n_clock)
+rand1=0
+rand2=0
 
 #Set SN lists to 0
 SN1=[0]*(n_clock) #Input1
@@ -75,11 +77,20 @@ for i in range(n_clock):
     ###LFSR CODE###
     
     #Comparator for bipolar SNG of input
-    if(in_prob1>int(LFSR1[0:3],2)):
+    rand1 = 0
+    rand2 = 0
+    
+    for i in range(4):
+        if (LFSR1[i+27] == 1):
+            rand1 = rand1 + pow(2,i)
+        if (LFSR2[i+27] == 1):
+            rand2 = rand2 + pow(2,i)
+            
+    if(in_prob1>rand1):
         SN1 = 1
     else:
         SN1 = 0
-    if(in_prob2>int(LFSR2[0:3],2)):
+    if(in_prob2>rand2):
         SN2 = 1
     else:
         SN2 = 0
@@ -130,6 +141,7 @@ async def test_project(dut):
     #True test begins here
     dut._log.info("Test project behavior")
     
+    test_out_prob = 0
     #Set input sample
     #BN Prob 1
     dut.ui_in[0].value = 0
@@ -151,5 +163,9 @@ async def test_project(dut):
     #The following assertion is just an example of how to check the output values.
     
     # Test (assert) that we are getting the expected output.
-    assert int(dut.uo_out[2:0].value,2) == out_prob
+    for i in range(3):
+        if(dut.uo_out[i] == 1):
+            test_out_prob = test_out_prob + pow(2,i)
+        
+    assert test_out_prob == out_prob
     assert dut.uo_out[4].value == over_flg
