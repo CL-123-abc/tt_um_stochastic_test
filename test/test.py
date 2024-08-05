@@ -29,10 +29,10 @@ PRBSO2[prbs_size-2]=1
 n_clock = 10000
 
 #Set output lists
-LFSR1=[1]*(n_clock)
-LFSR2=[1]*(n_clock)
-rand1=0
-rand2=0
+LFSR1=[0]*(n_clock)
+LFSR2=[0]*(n_clock)
+rand1=[0]*(n_clock)
+rand2=[0]*(n_clock)
 
 #Set SN lists to 0
 SN1=[0]*(n_clock) #Input1
@@ -44,8 +44,8 @@ in_prob1=8 #[1000]
 in_prob2=8 #[1000]
 #Output Probability Values
 up_counter_val=0
-out_prob=0
-ovr_flg=0 #Overflow flag
+out_prob=[0]*(n_clock)
+ovr_flg=[0]*(n_clock) #Overflow flag
 
 #Run through the simulation to create 
 #idealized LFSR, SN and output values
@@ -53,9 +53,8 @@ ovr_flg=0 #Overflow flag
 for i in range(n_clock):
     #Every 8 SN output bits, output and reset
     if(n_clock%8 == 0):
-        out_prob=up_counter_val
-        up_counter_val=0
-        over_flg=0
+        out_prob[i]=up_counter_val[i]
+        up_counter_val = 0
         
     ###LFSR CODE###
     #input the feedback for LFSR
@@ -77,33 +76,30 @@ for i in range(n_clock):
     ###LFSR CODE###
     
     #Comparator for bipolar SNG of input
-    rand1 = 0
-    rand2 = 0
-    
-    for i in range(4):
-        if (LFSR1[i+27] == 1):
-            rand1 = rand1 + pow(2,i)
-        if (LFSR2[i+27] == 1):
-            rand2 = rand2 + pow(2,i)
+    for tt in range(4):
+        if (LFSR1[tt+27] == 1):
+            rand1[i] = rand1[i] + pow(2,i)
+        if (LFSR2[tt+27] == 1):
+            rand2[i] = rand2[i] + pow(2,i)
             
-    if(in_prob1>rand1):
-        SN1 = 1
+    if(in_prob1>rand1[i]):
+        SN1[i] = 1
     else:
-        SN1 = 0
-    if(in_prob2>rand2):
-        SN2 = 1
+        SN1[i] = 0
+    if(in_prob2>rand2[i]):
+        SN2[i] = 1
     else:
-        SN2 = 0
+        SN2[i] = 0
 
     #XNOR gate for bipolar SN multiplication
-    SN3= not(SN1^SN2)
+    SN3[i]= not(SN1[i]^SN2[i])
     
     #Convert back to BN prob with Upcounter for
     #every 8 SN bits
-    if(SN3 == 1):
+    if(SN3[i] == 1):
         if(up_counter_val == 7):
             up_counter_val = 0
-            over_flg = 1
+            ovr_flg[i] = 1
         up_counter_val += 1
         
 #Start the test
@@ -168,4 +164,4 @@ async def test_project(dut):
                 test_out_prob = test_out_prob + pow(2,i)
         
         assert test_out_prob == out_prob
-        assert dut.uo_out[4].value == over_flg
+        assert dut.uo_out[4].value == ovr_flg
