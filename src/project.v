@@ -42,11 +42,9 @@ module tt_um_stochastic_test_CL123abc(
     end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
-		#1;
         lfsr_1[30:1] <=lfsr_1[29:0] ;
 
 	    lfsr_2[0] <= lfsr_2[12] ^ lfsr_2[16] ; //using different gates to get different pattern
-		#1;
         lfsr_2[30:1] <=lfsr_2[29:0] ;
 
 	    // Comparator used to generate Bipolar Stochastic Number from 4-bit probability.
@@ -78,7 +76,7 @@ end
   assign uo_out[4] = overflow;
   assign uio_out = 0;
   assign uio_oe  = 0;
-  assign uo_out[7:5] = 2'b00;
+	assign uo_out[7:5] = 3'b000;
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, uio_in, 1'b0}; 
 endmodule
