@@ -1,3 +1,9 @@
+# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
+# SPDX-License-Identifier: MIT
+#imnport the coco functionality
+import cocotb
+from cocotb.clock import Clock
+from cocotb.triggers import ClockCycles
 
 prbs_size = 31 #Size of the LFSR
 
