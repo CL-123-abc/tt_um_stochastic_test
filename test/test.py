@@ -157,7 +157,7 @@ async def test_project(dut):
         #The following assertion is just an example of how to check the output values.
     
         # Test (assert) that we are getting the expected output.
-        for i in range(3):
+        for i in range(1:4):
             if(dut.uo_out[i] == 1):
                 test_out_prob = test_out_prob + pow(2,i)
         
