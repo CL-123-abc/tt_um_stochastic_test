@@ -32,10 +32,10 @@ pinout:
   ui[7]: "in_prob_7"
 
   # Outputs
-  uo[0]: "out_prob_0"
+  uo[0]: ""
   uo[1]: "out_prob_1"
   uo[2]: "out_prob_2"
-  uo[3]: ""
+  uo[3]: "out_prob_3"
   uo[4]: "overflow"
   uo[5]: ""
   uo[6]: ""
