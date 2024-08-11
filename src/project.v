@@ -39,6 +39,7 @@ module tt_um_stochastic_test_CL123abc(
 	    clk_counter <= 4'b0000; // Reset clk counter
 	    output_prob <= 3'b000; // Reset output
 	    overflow <= 0; // Reset overflow
+	    uo_out = 4'b0000;
     end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
