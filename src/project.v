@@ -39,7 +39,6 @@ module tt_um_stochastic_test_CL123abc(
 	    clk_counter <= 4'b0000; // Reset clk counter
 	    output_prob <= 3'b000; // Reset output
 	    overflow <= 0; // Reset overflow
-	    uo_out = 4'b0000;
     end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
@@ -73,8 +72,8 @@ module tt_um_stochastic_test_CL123abc(
 end  
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[0] = 0;
-  assign uo_out[3:1] = clk? output_prob:uo_out[3:1];
-  assign uo_out[4] = clk? overflow:uo_out[4];
+	assign uo_out[3:1] = clk? output_prob : 3'b000;
+	assign uo_out[4] = clk? overflow:1'b0;
   assign uio_out = 0;
   assign uio_oe  = 0;
   assign uo_out[7:5] = 3'b000;
