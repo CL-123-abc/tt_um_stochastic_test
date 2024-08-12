@@ -12,7 +12,7 @@
  
 `default_nettype none
 
-module tt_um_stochastic_test_CL123abc(
+module tt_um_stochastic_test(
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -29,19 +29,19 @@ module tt_um_stochastic_test_CL123abc(
     reg [2:0] output_prob;
     reg over_flag;
     reg overflow;
-
+    
     always @(posedge clk or posedge rst_n) begin
         if (rst_n) begin
         lfsr_1 <= 31'd1; // Reset 1st counter
 	    lfsr_2 <= 31'd2; // Reset 2nd counter to different value
 	    SN_Bit_1 <= 1'b0; // Reset SN bits
 	    SN_Bit_2 <= 1'b0; 
-	    SN_Bit_Out <= 1'b0; 
+        SN_Bit_Out <= 1'b0; 
 	    clk_counter <= 4'b0000; // Reset clk counter
 	    output_prob <= 3'b000; // Reset output
 	    overflow <= 0; // Reset overflow
 	    over_flag <= 0; // Reset overflag
-    	end else begin
+        end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
         lfsr_1[30:1] <= lfsr_1[29:0] ;
@@ -64,7 +64,7 @@ module tt_um_stochastic_test_CL123abc(
 		    prob_counter <= 3'b000;
 	        end
 	        else begin
-	    	prob_counter <= prob_counter + 3'b001;
+	        prob_counter <= prob_counter + 3'b001;
 	        end
 	    end 
 	    
@@ -90,3 +90,4 @@ end
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, uio_in, 1'b0}; 
 endmodule
+
