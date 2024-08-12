@@ -23,13 +23,13 @@ module test(
     input  wire       rst_n    // reset_n - low to reset
 );
 	reg [30:0] lfsr_1, lfsr_2;
-    reg SN_Bit_1, SN_Bit_2, SN_Bit_Out; //TRY BUFFER? with check bit
+    reg SN_Bit_1, SN_Bit_2, SN_Bit_Out; 
     reg [3:0] clk_counter;
     reg [2:0] prob_counter;
     reg [2:0] output_prob;
     reg over_flag;
     reg overflow;
-     
+    
     always @(posedge clk or posedge rst_n) begin
         if (rst_n) begin
         lfsr_1 <= 31'd1; // Reset 1st counter
@@ -44,21 +44,21 @@ module test(
     end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
-        #1 lfsr_1[30:1] <= lfsr_1[29:0] ;
+        lfsr_1[30:1] <= lfsr_1[29:0] ;
         
 	    lfsr_2[0] <= lfsr_2[27] ^ lfsr_2[30] ; 
-        #2 lfsr_2[30:1] <= lfsr_2[29:0] ;
+        lfsr_2[30:1] <= lfsr_2[29:0] ;
         
 	    // Comparator used to generate Bipolar Stochastic Number from 4-bit probability.
 	    // Compare RN from LFSR with probability wanted in BN and generate 1 when RN < BN
-	    #3 SN_Bit_1 <= (lfsr_1[3:0] < ui_in[3:0]) ;
-	    #3 SN_Bit_2 <= (lfsr_2[3:0] < ui_in[7:4]) ;
+	    SN_Bit_1 <= (lfsr_1[3:0] < ui_in[3:0]) ;
+	    SN_Bit_2 <= (lfsr_2[3:0] < ui_in[7:4]) ;
 	    
 	    // Stochastic Multiplier for Bipolar SN uses XNOR gate
-	    #4 SN_Bit_Out <= !(SN_Bit_1 ^ SN_Bit_2) ;
+	    SN_Bit_Out <= !(SN_Bit_1 ^ SN_Bit_2) ;
 	    
 	    // To convert back to binary probability, use an up-counter, outputting the number of 1s in every 8 bits
-	    #5 if (SN_Bit_Out == 1) begin
+	    if (SN_Bit_Out == 1) begin
 	        if (prob_counter == 3'b111) begin
 		    over_flag <= 1; // if the number of bits is 8, overflow
 		    prob_counter <= 3'b000;
@@ -67,8 +67,8 @@ module test(
 	           prob_counter <= prob_counter + 3'b001;
 	        end
 	    end 
-        
-	    #6 if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles.
+	    
+	    if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles.
 	    output_prob <= prob_counter;
 	    overflow <= over_flag;
 	    over_flag <= 0; //Reset over_flag
@@ -78,7 +78,7 @@ module test(
 	    else begin
 	    
 	    end
-	    #7 clk_counter <= clk_counter + 4'b0001;
+	    #60 clk_counter <= clk_counter + 4'b0001;
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
@@ -91,3 +91,4 @@ end
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, uio_in, 1'b0}; 
 endmodule
+
