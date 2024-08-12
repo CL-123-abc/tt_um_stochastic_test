@@ -9,10 +9,10 @@
  * SPDX-License-Identifier: Apache-2.0
  * tt_um_davidparent_prbs31
  */
-
+ 
 `default_nettype none
 
-module tt_um_stochastic_test_CL123abc(
+module test(
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -20,13 +20,14 @@ module tt_um_stochastic_test_CL123abc(
     output wire [7:0] uio_oe,   // IOs: Enable path (active high: 0=input, 1=output)
     input  wire       ena,      // always 1 when the design is powered, so you can ignore it
     input  wire       clk,      // clock
-    input  wire       rst_n     // reset_n - low to reset
+    input  wire       rst_n    // reset_n - low to reset
 );
 	reg [30:0] lfsr_1, lfsr_2;
-    reg SN_Bit_1, SN_Bit_2, SN_Bit_Out;
+    reg SN_Bit_1, SN_Bit_2, SN_Bit_Out; //TRY BUFFER? with check bit
     reg [3:0] clk_counter;
     reg [2:0] prob_counter;
     reg [2:0] output_prob;
+    reg over_flag;
     reg overflow;
      
     always @(posedge clk or posedge rst_n) begin
@@ -39,41 +40,51 @@ module tt_um_stochastic_test_CL123abc(
 	    clk_counter <= 4'b0000; // Reset clk counter
 	    output_prob <= 3'b000; // Reset output
 	    overflow <= 0; // Reset overflow
+	    over_flag <= 0; // Reset overflag
     end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
-        lfsr_1[30:1] <=lfsr_1[29:0] ;
-
-	    lfsr_2[0] <= lfsr_2[12] ^ lfsr_2[16] ; //using different gates to get different pattern
-        lfsr_2[30:1] <=lfsr_2[29:0] ;
-
+        #1 lfsr_1[30:1] <= lfsr_1[29:0] ;
+        
+	    lfsr_2[0] <= lfsr_2[27] ^ lfsr_2[30] ; 
+        #2 lfsr_2[30:1] <= lfsr_2[29:0] ;
+        
 	    // Comparator used to generate Bipolar Stochastic Number from 4-bit probability.
 	    // Compare RN from LFSR with probability wanted in BN and generate 1 when RN < BN
-	    SN_Bit_1 <= (lfsr_1[30:27] < ui_in[3:0]) ;
-	    SN_Bit_2 <= (lfsr_2[30:27] < ui_in[7:4]) ;
-
+	    #3 SN_Bit_1 <= (lfsr_1[3:0] < ui_in[3:0]) ;
+	    #3 SN_Bit_2 <= (lfsr_2[3:0] < ui_in[7:4]) ;
+	    
 	    // Stochastic Multiplier for Bipolar SN uses XNOR gate
-	    SN_Bit_Out <= !(SN_Bit_1 ^ SN_Bit_2) ;
-	
+	    #4 SN_Bit_Out <= !(SN_Bit_1 ^ SN_Bit_2) ;
+	    
 	    // To convert back to binary probability, use an up-counter, outputting the number of 1s in every 8 bits
-	    if (SN_Bit_Out == 1) begin
+	    #5 if (SN_Bit_Out == 1) begin
 	        if (prob_counter == 3'b111) begin
-		    overflow <= 1; // if the number of bits is 8, overflow
+		    over_flag <= 1; // if the number of bits is 8, overflow
+		    prob_counter <= 3'b000;
 	        end
-	    prob_counter <= prob_counter + 3'b001;
+	        else begin
+	           prob_counter <= prob_counter + 3'b001;
+	        end
 	    end 
         
-	    if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles.
+	    #6 if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles.
 	    output_prob <= prob_counter;
-	    overflow <= 0;
+	    overflow <= over_flag;
+	    over_flag <= 0; //Reset over_flag
+	    prob_counter <= 3'b000; // Reset prob_counter
+	    clk_counter <= 4'b0000; //Reset clock counter
 	    end
-	    clk_counter <= clk_counter + 4'b0001;
+	    else begin
+	    
+	    end
+	    #7 clk_counter <= clk_counter + 4'b0001;
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
   assign uo_out[0] = 0;
-  assign uo_out[3:1] = clk? output_prob : 3'b000;
-  assign uo_out[4] = clk? overflow:1'b0;
+  assign uo_out[3:1] = output_prob;
+  assign uo_out[4] = overflow;
   assign uio_out = 0;
   assign uio_oe  = 0;
   assign uo_out[7:5] = 3'b000;
