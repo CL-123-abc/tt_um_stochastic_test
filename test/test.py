@@ -151,8 +151,8 @@ async def test_project(dut):
     #Compare output to theory for each clock cycle
     for i in range(0,n_clock):
         
-        # Wait for one clock cycle to see the output values
-        await ClockCycles(dut.clk,1)
+        # Wait for 8 clock cycles to see the output values
+        await ClockCycles(dut.clk,8)
     
         #The following assertion is just an example of how to check the output values.
     
