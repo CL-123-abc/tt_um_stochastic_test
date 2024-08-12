@@ -134,7 +134,7 @@ async def test_project(dut):
     
     #True test begins here
     dut._log.info("Test project behavior")
-    
+    await ClockCycles(dut.clk,100)
     test_out_prob = 0
     #Set input sample
     #BN Prob 1
