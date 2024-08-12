@@ -12,7 +12,7 @@
  
 `default_nettype none
 
-module test(
+module tt_um_stochastic_test_CL123abc(
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -41,7 +41,7 @@ module test(
 	    output_prob <= 3'b000; // Reset output
 	    overflow <= 0; // Reset overflow
 	    over_flag <= 0; // Reset overflag
-    end else begin
+    	end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
         lfsr_1[30:1] <= lfsr_1[29:0] ;
