@@ -29,7 +29,7 @@ module tt_um_stochastic_test_CL123abc(
     reg [2:0] output_prob;
     reg over_flag;
     reg overflow;
-    
+
     always @(posedge clk or posedge rst_n) begin
         if (rst_n) begin
         lfsr_1 <= 31'd1; // Reset 1st counter
@@ -64,7 +64,7 @@ module tt_um_stochastic_test_CL123abc(
 		    prob_counter <= 3'b000;
 	        end
 	        else begin
-	           prob_counter <= prob_counter + 3'b001;
+	    	prob_counter <= prob_counter + 3'b001;
 	        end
 	    end 
 	    
