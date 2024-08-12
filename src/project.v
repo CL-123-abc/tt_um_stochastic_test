@@ -76,9 +76,8 @@ module test(
 	    clk_counter <= 4'b0000; //Reset clock counter
 	    end
 	    else begin
-	    
-	    end
 	    clk_counter <= clk_counter + 4'b0001;
+	    end
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
@@ -91,4 +90,3 @@ end
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, uio_in, 1'b0}; 
 endmodule
-
