@@ -78,7 +78,7 @@ module test(
 	    else begin
 	    
 	    end
-	    #60 clk_counter <= clk_counter + 4'b0001;
+	    clk_counter <= clk_counter + 4'b0001;
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
