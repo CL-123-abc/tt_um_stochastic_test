@@ -18,7 +18,7 @@ prbs_size = 31 #Size of the LFSR
 LFSR1_seed = [prbs_size-1]
 LFSR2_seed = [prbs_size-2]
 #Set number of clock cycles to test
-n_clock = 100000
+n_clock = 1000000
 
 #Input Probabilities in integer val
 size = 1
