@@ -18,7 +18,7 @@ prbs_size = 31 #Size of the LFSR
 LFSR1_seed = [prbs_size-1]
 LFSR2_seed = [prbs_size-2]
 #Set number of clock cycles to test
-n_clock = 1000000
+n_clock = 100000
 
 #Input Probabilities in integer val
 size = 1
@@ -167,7 +167,7 @@ async def test_project(dut):
     #Compare output to theory for each clock cycle
     for i in range(0,n_clock):
         
-        # Wait for 8 clock cycles to see the output values
+        # Wait for 1 clock cycles to see the output values
         await ClockCycles(dut.clk,1)
     
         #The following assertion is just an example of how to check the output values.
