@@ -165,7 +165,7 @@ async def test_project(dut):
     dut.ui_in[7].value = 1
     
     #Compare output to theory for each clock cycle
-    for i in range(0,n_clock/8):
+    for i in range(0,n_clock,8):
         
         # Wait for 8 clock cycles to see the output values
         await ClockCycles(dut.clk,8)
