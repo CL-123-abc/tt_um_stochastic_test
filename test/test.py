@@ -1,15 +1,19 @@
 # SPDX-FileCopyrightText: © 2024 Tiny Tapeout
 # SPDX-License-Identifier: MIT
-#imnport the coco functionality
+#import the coco functionality
 #Testing a bipolar SN multiplier with 4-bit inputs (Probability intervals: 1/16) 
 #Outputs every 8-bits, averages after n_clock cycles
-#
-import matplotlib.pyplot as plt
 
+#import cocotb 
+import cocotb
+from cocotb.clock import Clock
+from cocotb.triggers import ClockCycles
+
+#Settings for SC 
 output_interval = 8 #Determines after how many cycles the output updates, doesnt really affect simulation but does in real circuit
 input_bitsize = 4 #Determines number of bits in input, probability interval
-graph_interval = 1000 #Determines how many clock cycles will pass per marker on plot
 prbs_size = 31 #Size of the LFSR
+
 #Seeds of LFSR
 LFSR1_seed = [prbs_size-1]
 LFSR2_seed = [prbs_size-2]
