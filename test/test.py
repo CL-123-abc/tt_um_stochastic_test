@@ -137,13 +137,13 @@ async def test_project(dut):
     dut.rst_n.value = 0
     
     #wait 5 clock cycle
-    await ClockCycles(dut.clk,15)
+    await ClockCycles(dut.clk,5)
     
     #Set reset to 1
     dut.rst_n.value = 1
     
     #wait for five clock cycles.
-    await ClockCycles(dut.clk, 15)
+    await ClockCycles(dut.clk, 5)
     
     #Set reset to 0
     dut.rst_n.value = 0
