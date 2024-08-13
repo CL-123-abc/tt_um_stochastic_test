@@ -137,20 +137,20 @@ async def test_project(dut):
     dut.rst_n.value = 0
     
     #wait 5 clock cycle
-    await ClockCycles(dut.clk,5)
+    await ClockCycles(dut.clk,15)
     
     #Set reset to 1
     dut.rst_n.value = 1
     
     #wait for five clock cycles.
-    await ClockCycles(dut.clk, 5)
+    await ClockCycles(dut.clk, 15)
     
     #Set reset to 0
     dut.rst_n.value = 0
     
     #True test begins here
     dut._log.info("Test project behavior")
-    await ClockCycles(dut.clk,100) 
+    await ClockCycles(dut.clk,1) 
     test_out_prob = 0
     #Set input sample
     #BN Prob 1
