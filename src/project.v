@@ -38,7 +38,7 @@ module tt_um_stochastic_test_CL123abc(
 	    SN_Bit_2 <= 1'b0; 
         SN_Bit_Out <= 1'b0; 
 	    clk_counter <= 4'b0000; // Reset clk counter
-	    prob_counter < = 3'b000; // Reset output counter
+	    prob_counter <= 3'b000; // Reset output counter
 	    output_prob <= 3'b000; // Reset output
 	    over_flag <= 0; // Reset overflag
 	    overflow <= 0; // Reset overflow
