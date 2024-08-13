@@ -150,7 +150,7 @@ async def test_project(dut):
     
     #True test begins here
     dut._log.info("Test project behavior")
-    await ClockCycles(dut.clk,24) 
+    await ClockCycles(dut.clk,100) 
     test_out_prob = 0
     #Set input sample
     #BN Prob 1
@@ -165,10 +165,10 @@ async def test_project(dut):
     dut.ui_in[7].value = 1
     
     #Compare output to theory for each clock cycle
-    for i in range(0,n_clock,8):
+    for i in range(0,n_clock):
         
         # Wait for 8 clock cycles to see the output values
-        await ClockCycles(dut.clk,8)
+        await ClockCycles(dut.clk,1)
     
         #The following assertion is just an example of how to check the output values.
     
