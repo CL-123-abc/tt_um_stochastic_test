@@ -8,7 +8,7 @@ You can also include images in this folder and reference them in the markdown. E
 -->
 
 ## How it works
-Stochastic Multiplier. 
+Stochastic Multiplier. 4-bit inputs and output using bipolar representation.
 
 ## How to test
 Input of 2 4-bit Binary Probabilities and output of 1 3-bit probability and overflow.
