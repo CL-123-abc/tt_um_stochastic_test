@@ -65,8 +65,7 @@ module tt_um_stochastic_test_CL123abc(
 	    // Stochastic Adder for Bipolar SN uses MUX, controlled by sel
 	    if (SN_Bit_sel == 0) begin
 	       SN_Bit_Out <= SN_Bit_1;
-	    end
-		else if (SN_Bit_sel == 1) begin
+	    end else if (SN_Bit_sel == 1) begin
 	       SN_Bit_Out <= SN_Bit_2;
 	    end
 	    
