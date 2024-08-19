@@ -82,7 +82,7 @@ module tt_um_stochastic_test_CL123abc(
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
-	assign uo_out[3:1] = output_prob[3:0];
+	assign uo_out[3:1] = output_prob[2:0];
 	assign uo_out[4] = overflow;
 	assign uo_out[7:5] = 0;
   assign uio_out = 0;
