@@ -66,7 +66,7 @@ module tt_um_stochastic_test_CL123abc(
 	    if (SN_Bit_sel == 0) begin
 	       SN_Bit_Out <= SN_Bit_1;
 	    end
-	    else if (lfsr_sel[0] == 1) begin
+		else if (SN_Bit_sel == 1) begin
 	       SN_Bit_Out <= SN_Bit_2;
 	    end
 	    
