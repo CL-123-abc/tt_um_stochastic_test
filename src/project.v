@@ -1,3 +1,4 @@
+
 /*
  * Copyright (c) 2024 Your Name
  * SPDX-License-Identifier: Apache-2.0
@@ -22,26 +23,28 @@ module tt_um_stochastic_test_CL123abc(
     input  wire       clk,      // clock
     input  wire       rst_n    // reset_n - low to reset
 );
-	reg [30:0] lfsr_1, lfsr_2;
-    reg SN_Bit_1, SN_Bit_2, SN_Bit_Out; 
+	reg [30:0] lfsr_1, lfsr_2, lfsr_sel;
+    reg SN_Bit_1, SN_Bit_2, SN_Bit_sel, SN_Bit_Out; 
     reg [3:0] clk_counter;
-	reg [2:0] prob_counter;
-	reg [2:0] output_prob;
+    reg [2:0] prob_counter;
+    reg [2:0] output_prob;
     reg over_flag;
-	reg overflow;
+    reg overflow;
     
     always @(posedge clk or posedge rst_n) begin
         if (rst_n) begin
         lfsr_1 <= 31'd1; // Reset 1st counter
 	    lfsr_2 <= 31'd2; // Reset 2nd counter to different value
+	    lfsr_sel <= 31'd3;
 	    SN_Bit_1 <= 1'b0; // Reset SN bits
 	    SN_Bit_2 <= 1'b0; 
+	    SN_Bit_sel <= 1'b0;
         SN_Bit_Out <= 1'b0; 
 	    clk_counter <= 4'b0000; // Reset clk counter
+	    output_prob <= 3'b000; // Reset output
 	    prob_counter <= 3'b000; // Reset output counter
-		output_prob <= 3'b000;
+	    overflow <= 0; // Reset overflow
 	    over_flag <= 0; // Reset overflag
-	    overflow <= 0;
         end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
@@ -50,13 +53,22 @@ module tt_um_stochastic_test_CL123abc(
 	    lfsr_2[0] <= lfsr_2[27] ^ lfsr_2[30] ; 
         lfsr_2[30:1] <= lfsr_2[29:0] ;
         
+        lfsr_sel[0] <= lfsr_sel[27] ^ lfsr_sel[30] ; 
+        lfsr_sel[30:1] <= lfsr_sel[29:0] ;
+        
 	    // Comparator used to generate Bipolar Stochastic Number from 4-bit probability.
 	    // Compare RN from LFSR with probability wanted in BN and generate 1 when RN < BN
 	    SN_Bit_1 <= (lfsr_1[3:0] < ui_in[3:0]) ;
 	    SN_Bit_2 <= (lfsr_2[3:0] < ui_in[7:4]) ;
+	    SN_Bit_sel <= (lfsr_sel[3:0] < uio_in[3:0]); // Sets the ratio of each prob (eg if 0.5 it will be equal parts from both)
 	    
-	    // Stochastic Multiplier for Bipolar SN uses XNOR gate
-	    SN_Bit_Out <= !(SN_Bit_1 ^ SN_Bit_2) ;
+	    // Stochastic Adder for Bipolar SN uses MUX
+	    if (SN_Bit_sel == 0) begin
+	       SN_Bit_Out <= SN_Bit_1;
+	    end
+	    else if (lfsr_sel[0] == 1) begin
+	       SN_Bit_Out <= SN_Bit_2;
+	    end
 	    
 	    // To convert back to binary probability, use an up-counter, outputting the number of 1s in every 8 bits
 	    if (SN_Bit_Out == 1) begin
@@ -69,8 +81,8 @@ module tt_um_stochastic_test_CL123abc(
 	        end
 	    end 
 	    
-		if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles. Skip every 9th bit to output.
-		output_prob <= prob_counter;
+	    if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles. Skip bit 9 to output and go back to reset.
+	    output_prob <= prob_counter;
 	    overflow <= over_flag;
 	    over_flag <= 0; //Reset over_flag
 	    prob_counter <= 3'b000; // Reset prob_counter
@@ -82,13 +94,13 @@ module tt_um_stochastic_test_CL123abc(
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
-	assign uo_out[0] = 0;
-	assign uo_out[3:1] = output_prob[2:0];
-	assign uo_out[4] = overflow;
-	assign uo_out[7:5] = 0;
+  assign uo_out[0] = 0;
+  assign uo_out[3:1] = output_prob;
+  assign uo_out[4] = overflow;
   assign uio_out = 0;
   assign uio_oe  = 0;
+  assign uo_out[7:5] = 3'b000;
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, uio_in, 1'b0}; 
+  wire _unused = &{ena, uio_in[7:4], 1'b0}; 
 endmodule
 
