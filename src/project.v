@@ -68,7 +68,7 @@ module tt_um_stochastic_test_CL123abc(
 	    end 
 	    
 		if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles. Skip every 9th bit to output.
-		average <= {over_flag, prob_counter} >> 4;
+		average <= (average+{over_flag, prob_counter}) >> 4;
 	   
 	    over_flag <= 0; //Reset over_flag
 	    prob_counter <= 3'b000; // Reset prob_counter
