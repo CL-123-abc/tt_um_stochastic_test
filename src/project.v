@@ -62,7 +62,7 @@ module tt_um_stochastic_test_CL123abc(
 	    SN_Bit_2 <= (lfsr_2[3:0] < ui_in[7:4]) ;
 	    SN_Bit_sel <= (lfsr_sel[3:0] < uio_in[3:0]); // Sets the ratio of each prob (eg if 0.5 it will be equal parts from both)
 	    
-	    // Stochastic Adder for Bipolar SN uses MUX
+	    // Stochastic Adder for Bipolar SN uses MUX, controlled by sel
 	    if (SN_Bit_sel == 0) begin
 	       SN_Bit_Out <= SN_Bit_1;
 	    end
