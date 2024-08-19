@@ -25,10 +25,9 @@ module tt_um_stochastic_test_CL123abc(
 	reg [30:0] lfsr_1, lfsr_2;
     reg SN_Bit_1, SN_Bit_2, SN_Bit_Out; 
     reg [3:0] clk_counter;
-    reg [2:0] prob_counter;
-    reg [2:0] output_prob;
+	reg [2:0] prob_counter;
     reg over_flag;
-    reg overflow;
+	reg [31:0] average;
     
     always @(posedge clk or posedge rst_n) begin
         if (rst_n) begin
@@ -39,10 +38,8 @@ module tt_um_stochastic_test_CL123abc(
         SN_Bit_Out <= 1'b0; 
 	    clk_counter <= 4'b0000; // Reset clk counter
 	    prob_counter <= 3'b000; // Reset output counter
-	    output_prob <= 3'b000; // Reset output
 	    over_flag <= 0; // Reset overflag
-	    overflow <= 0; // Reset overflow
-	    
+	    average <= 0;
         end else begin
         // Increment counter on each clock cycle
         lfsr_1[0] <= lfsr_1[27] ^ lfsr_1[30] ;
@@ -71,8 +68,8 @@ module tt_um_stochastic_test_CL123abc(
 	    end 
 	    
 		if (clk_counter == 4'b1000) begin // output only when clk_counter has counted 8 cycles. Skip every 9th bit to output.
-	    output_prob <= prob_counter;
-	    overflow <= over_flag;
+		average <= {over_flag, prob_counter} >> 4;
+	   
 	    over_flag <= 0; //Reset over_flag
 	    prob_counter <= 3'b000; // Reset prob_counter
 	    clk_counter <= 4'b0000; //Reset clock counter
@@ -83,12 +80,10 @@ module tt_um_stochastic_test_CL123abc(
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[0] = 0;
-  assign uo_out[3:1] = output_prob;
-  assign uo_out[4] = overflow;
+	assign uo_out[3:0] = average[3:0];
+  assign uo_out[7:4] = 0;
   assign uio_out = 0;
   assign uio_oe  = 0;
-  assign uo_out[7:5] = 3'b000;
   // List all unused inputs to prevent warnings
   wire _unused = &{ena, uio_in, 1'b0}; 
 endmodule
