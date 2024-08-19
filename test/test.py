@@ -153,6 +153,11 @@ async def test_project(dut):
     await ClockCycles(dut.clk,1) 
     test_out_prob = 0
     #Set input sample
+    #BN Prob sel
+    dut.uio_in[0].value = 0
+    dut.uio_in[1].value = 0
+    dut.uio_in[2].value = 0
+    dut.uio_in[3].value = 1
     #BN Prob 1
     dut.ui_in[0].value = 0
     dut.ui_in[1].value = 0
