@@ -156,13 +156,13 @@ async def test_project(dut):
     #BN Prob 1
     dut.ui_in[0].value = 0
     dut.ui_in[1].value = 0
-    dut.ui_in[2].value = 0
-    dut.ui_in[3].value = 1
+    dut.ui_in[2].value = 1
+    dut.ui_in[3].value = 0
     #BN Prob 2
     dut.ui_in[4].value = 0
     dut.ui_in[5].value = 0
-    dut.ui_in[6].value = 0
-    dut.ui_in[7].value = 1
+    dut.ui_in[6].value = 1
+    dut.ui_in[7].value = 0
     
     #Compare output to theory for each clock cycle
     for i in range(0,n_clock):
