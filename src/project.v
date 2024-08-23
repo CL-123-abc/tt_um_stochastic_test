@@ -36,8 +36,8 @@ module tt_um_stochastic_test_CL123abc(
 	    SN_Bit_1 <= 1'b0; // Reset SN bits
 	    SN_Bit_2 <= 1'b0; 
         SN_Bit_Out <= 1'b0; 
-	    clk_counter <= 4'b0000; // Reset clk counter
-	    prob_counter <= 3'b000; // Reset output counter
+	    clk_counter <= 4'b0; // Reset clk counter
+	    prob_counter <= 3'b0; // Reset output counter
 	    over_flag <= 0; // Reset overflag
 	average <= 0;
         end else begin
@@ -56,25 +56,25 @@ module tt_um_stochastic_test_CL123abc(
 	    // Stochastic Multiplier for Bipolar SN uses XNOR gate
 	    SN_Bit_Out <= !(SN_Bit_1 ^ SN_Bit_2) ;
 	    
-	    // To convert back to binary probability, use an up-counter, outputting the number of 1s in every 8 bits
+	    // To convert back to binary probability, use an up-counter, outputting the number of 1s in every 2^7 = 128 bits
 	    if (SN_Bit_Out == 1) begin
-			if (prob_counter == 7'b1111111) begin
-		    over_flag <= 1; // if the number of bits is 8, overflow
-		    prob_counter <= 7'b0000000;
+			if (prob_counter == 7'b127) begin
+		    over_flag <= 1; // if the number of bits is 128, overflow
+		    prob_counter <= 7'b0;
 	        end
 	        else begin
-	        prob_counter <= prob_counter + 7'b0000001;
+	        prob_counter <= prob_counter + 7'b1;
 	        end
 	    end 
 	    
-			if (clk_counter == 8'b10000000) begin // output only when clk_counter has counted 8 cycles. Skip every 9th bit to output.
-				average <={over_flag,prob_counter, 1'b0} >> 4;
+			if (clk_counter == 8'd128) begin // output only when clk_counter has counted 2^7=128 cycles. Skip every 2^7 + 1 bit to output.
+				average <={over_flag,prob_counter} >> 3; // over_flag is not actually part of the probability value
 	    over_flag <= 0; //Reset over_flag
-	    prob_counter <= 7'b0000000; // Reset prob_counter
-	    clk_counter <= 8'b00000000; //Reset clock counter
+	    prob_counter <= 7'b0; // Reset prob_counter
+	    clk_counter <= 8'b0; //Reset clock counter
 	    end
 	    else begin
-	    clk_counter <= clk_counter + 8'b00000001;
+	    clk_counter <= clk_counter + 8'b1;
 	    end
     end
 end  
