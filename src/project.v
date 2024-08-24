@@ -58,7 +58,7 @@ module tt_um_stochastic_test_CL123abc(
 	    
 	    // To convert back to binary probability, use an up-counter, outputting the number of 1s in every 2^7 = 128 bits
 	    if (SN_Bit_Out == 1) begin
-			if (prob_counter == 7'b127) begin
+		    if (prob_counter == 7'd127) begin
 		    over_flag <= 1; // if the number of bits is 128, overflow
 		    prob_counter <= 7'b0;
 	        end
