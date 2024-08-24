@@ -8,10 +8,14 @@ You can also include images in this folder and reference them in the markdown. E
 -->
 
 ## How it works
-Stochastic Multiplier. 4-bit inputs and output using bipolar representation.
+Stochastic Multiplier using bipolar representation. 
+4-bit inputs and output of actual probability value.
 
 ## How to test
-Input of 2 4-bit Binary Probabilities and output of 1 3-bit probability and overflow.
+main takes two separate inputs to give 1 output, and the output is the result of multiplication after 8 bits.
+test-adder takes two separate inputs to give 1 output, and the output is the result of addition after 8 bits.
+test-avg takes two separate inputs to give 1 output, and the output is the result of multiplication after 128 bits.
+test-self-multiply-D-FF takes 1 input to give 1 output, and the output is the result of multiplication after 128 bits.
 
 ## External hardware
 ADALM2000
