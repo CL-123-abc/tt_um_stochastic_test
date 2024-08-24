@@ -66,7 +66,7 @@ module tt_um_stochastic_test_CL123abc(
 	    end 
 	    
 	    if (clk_counter == 8'b10000000) begin // output only when clk_counter has counted 256 cycles. Skip every 257th bit to output
-		    average <= {over_flag, prob_counter,1'b0} >> 4;
+		    average <= {over_flag, prob_counter} >> 3; //over_flag is not actually part of the value, right shifted by 3 to divide by 8
 	    
 	    over_flag <= 0; //Reset over_flag
 	    prob_counter <= 7'b0000000; // Reset prob_counter
@@ -78,7 +78,7 @@ module tt_um_stochastic_test_CL123abc(
     end
 end  
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7:0] = average[7:0];
+	assign uo_out[7:0] = average[7:0];// average[7] is over_flag which is not actually part of the value
   assign uio_out = 0;
   assign uio_oe  = 0;
   // List all unused inputs to prevent warnings
